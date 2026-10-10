@@ -1,17 +1,18 @@
 # CodeSage AI — Intelligent Python Code Review Assistant
 
-CodeSage AI is a Python static analysis tool that reviews source code for selected security risks, common programming mistakes, and code-quality issues.
+CodeSage AI is a Python static analysis and security review tool that identifies potential vulnerabilities, common programming mistakes, and code-quality issues. It combines custom AST-based analysis with **Bandit**, a Python security analysis tool, and presents findings through an interactive Streamlit dashboard.
 
 ## Features
 
-- **Security checks:** Detects potentially hard-coded secrets, `eval()`, `exec()`, unsafe shell execution, and potential SQL injection patterns.
-- **Code-quality checks:** Identifies mutable default arguments and bare `except` clauses.
+- **Security vulnerability detection:** Identifies potentially hard-coded secrets, dangerous use of `eval()`, unsafe shell execution, and selected SQL injection patterns.
+- **Code-quality analysis:** Detects mutable default arguments and bare `except` clauses.
 - **Syntax validation:** Reports Python syntax errors.
-- **Severity classification:** Organizes findings into High, Medium, and Low categories.
-- **Interactive dashboard:** Review findings through a Streamlit web interface.
-- **Suggested improvements:** Provides explanations and recommendations for detected issues.
-- **Report export:** Download code review results as a Markdown report.
-- **Automated tests:** Uses Python's `unittest` framework to test important analysis rules.
+- **Bandit integration:** Uses an established Python security analyzer to identify additional security issues.
+- **Severity classification:** Groups findings into High, Medium, and Low categories.
+- **Interactive dashboard:** Submit Python code by uploading a file or pasting source code into the Streamlit interface.
+- **Deduplicated findings:** Consolidates overlapping results from different analysis engines.
+- **Report export:** Download code review results in Markdown and JSON formats.
+- **Automated tests:** Includes unit tests for custom analysis rules and Bandit integration.
 
 ## Tech Stack
 
@@ -19,56 +20,100 @@ CodeSage AI is a Python static analysis tool that reviews source code for select
 - Streamlit
 - Abstract Syntax Tree (AST)
 - Regular expressions
-- unittest
+- Bandit
+- Python `unittest`
+- JSON and Markdown reporting
 
-## Installation
+## Project Structure
 
-1. Clone this repository:
+```text
+CodeSage-AI/
+├── app.py
+├── analyzer.py
+├── bandit_analyzer.py
+├── test_analyzer.py
+├── test_bandit.py
+├── requirements.txt
+├── README.md
+└── .gitignore
+```
 
-   ```bash
-   git clone YOUR_GITHUB_REPOSITORY_URL
-   cd CodeSage-AI
-   ```
+## Installation and Setup
 
-2. Install dependencies:
+### 1. Clone the repository
 
-   ```bash
-   python -m pip install -r requirements.txt
-   ```
+```bash
+git clone https://github.com/23u0348-art/CodeSage-AI.git
+cd CodeSage-AI
+```
 
-3. Run the application:
+### 2. Install dependencies
 
-   ```bash
-   python -m streamlit run app.py
-   ```
+```bash
+python -m pip install -r requirements.txt
+```
 
-4. Open the local URL displayed in the terminal.
+### 3. Run the application
 
-## Run Automated Tests
+```bash
+python -m streamlit run app.py
+```
+
+Open the local URL shown in your terminal to access the dashboard.
+
+## How to Use
+
+1. Open the CodeSage AI dashboard.
+2. Upload a Python file or paste Python source code into the editor.
+3. Select the analysis engines you want to use.
+4. Run the analysis.
+5. Review the findings, severity levels, explanations, and suggested fixes.
+6. Download the results as a Markdown or JSON report.
+
+## Running Tests
+
+Run the custom analyzer tests:
 
 ```bash
 python -m unittest -v test_analyzer.py
 ```
 
+Run the Bandit integration tests:
+
+```bash
+python -m unittest -v test_bandit.py
+```
+
+Run both test suites:
+
+```bash
+python -m unittest -v test_analyzer.py test_bandit.py
+```
+
 ## How It Works
 
-1. Submit Python source code by uploading a `.py` file or pasting code.
-2. The analyzer checks the source using AST parsing and rule-based patterns.
-3. Findings are assigned severity levels and include explanations and suggested improvements.
-4. Review the findings in the dashboard and export a Markdown report.
+1. The application accepts Python source code from the user.
+2. The custom analyzer uses AST parsing and rule-based checks to inspect the code.
+3. Bandit performs additional security analysis.
+4. Results from the enabled analysis engines are consolidated to reduce duplicate findings.
+5. The dashboard displays findings with severity, line numbers, descriptions, and suggested improvements.
+6. Users can export the results as Markdown or JSON for further review.
 
 ## Current Limitations
 
-CodeSage AI is an educational static analysis prototype. Its current rules are not a complete security audit and may produce false positives or miss vulnerabilities. It does not currently use a trained AI model or an external LLM API.
+CodeSage AI is an educational static analysis prototype, not a replacement for a professional security audit. Findings may include false positives, and some vulnerabilities may not be detected. Results depend on the rules and analysis engines enabled.
 
-**Never upload real passwords, API keys, tokens, or confidential source code to an untrusted environment.**
+The project does not currently use a trained AI model or an external large language model API. Its analysis is based on custom static analysis rules and Bandit.
+
+**Security note:** Do not upload real credentials, API keys, passwords, tokens, or confidential source code to an untrusted environment.
 
 ## Future Improvements
 
-- Add more security and code-quality rules.
-- Improve detection accuracy with additional automated tests.
-- Integrate established security tools such as Bandit.
-- Add code-quality metrics and continuous integration using GitHub Actions.
+- Add more security rules and code-quality checks.
+- Improve detection accuracy and test coverage.
+- Add code complexity metrics and maintainability analysis.
+- Introduce GitHub Actions for automated testing.
+- Explore optional AI-assisted explanations and remediation suggestions.
 
 ## Author
 
